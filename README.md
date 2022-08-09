@@ -1,9 +1,88 @@
 # septoria musiva GWAS
+STEPS
+
+*this assumes you are given the fastq reads and the reference genome*
+
+1. index the reference fasta
+
+`gatk CreateSequenceDictionary -R REF.fasta`
+
+`samtools faidx REF.fasta`
+
+`bwa index REF.fasta`
+
+*keep everything here in the Reference_indexing directory*
+
+2. combine R1 & R2 of the reads into a SAM file
+
+`bwa mem REF.fasta ID_R1.fastq ID_R2.fastq > ID.sam`
+
+*produces .sam file*
+
+3. add read group to the sam file
+
+`java -jar DIRECTORY/picard.jar AddOrReplaceReadGroups -I ID.sam -O ID.rg.sam -RGID ID -RGLB ID -RGPL Illumna -RGPU ID -RGSM ID`
+
+*produces rg.sam files*
+
+4. sort the sam file, conver to bam file, and index output
+
+`java -jar DIRECTORY/picard.jar SortSam -I ID.rg.sam -O ID.bam -SORT_ORDER coordinate -CREATE_INDEX true`
+
+*produces .bam, .bai files*
+
+5. Mark duplicates, write them out to .mdup, filter bam file, and index output
+
+`java -jar DIRECTORY/picard.jar MarkDuplicates -I ID.bam -O ID.mdup.bam -M ID.mdup -ASSUME_SORT_ORDER coordinate -CREATE_INDEX true`
+
+*produces .mdup.bam, .mdup.bai files*
+
+6. Sort the marked up bam file and index output
+
+`java -jar picard.jar SortSam -I ID.mdup.bam -O ID.sorted.bam -SORT_ORDER coordinate -CREATE_INDEX true`
+
+*produces .sorted.bam, .sorted.bai files*
+
+7. produce vcf files from the .sorted.bam files
+
+`gatk HaplotypeCaller -R REF.fasta -I ID.sorted.bam -O ID.vcf -ERC GVCF -ploidy 1`
+
+*produces .vcf files*
+
+8. produce a combined vcf file using CombineGVCFs
 
 
+`gatk CombineGVCFs -R REF.fasta -V ID.vcf -V ID2.vcf (...) -V IDN.vcf -O COMBINED.vcf`
+
+a. if you have a lot of files, create a script that prints all of the file names delimited by " -V " 
+
+*produced .vcf FILE*
+
+9. produce a joint genotyping
+
+`gatk GenotypeGVCFs -R REF.fasta -V COMBINED.vcf -O COMBINED.gvcf.vcf`
+
+*produces .vcf FILE*
 
 
+10. Generate .bed, .bim, .fam files
 
+`plink --vcf X.vcf --allow-extra-chr`
+
+11. Generate .map, .ped, .nosex, and .log files
+
+`plink --vcf X.vcf --recode --out PREFIX --allow-extra-ch`
+
+12. be sure to rename the .bed, .bim. and .fam files to contain the .ped file's name. i.e., if your .ped file is named X.ped, rename former files to X.ped.bed ...
+
+13. to conduct the gwas, do
+
+`./gemma -bfile X.ped -p PHENOTYPE.csv -lm -o OUTPUT`
+
+.
+.
+.
+.
 Below is a catalog of all the errors in the process, not necessary for conducting the analysis
 
 Steps (attempt 1):
