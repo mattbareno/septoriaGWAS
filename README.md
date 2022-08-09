@@ -1,4 +1,11 @@
 # septoria musiva GWAS
+
+
+
+
+
+Below is a catalog of all the errors in the process, not necessary for conducting the analysis
+
 Steps (attempt 1):
 
 1. fastqc applied to given fastq R1/R2 files. Primer cutting and quality filtering above score of 30 accomplished with
