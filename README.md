@@ -1,4 +1,4 @@
-# poplar-septoria-GWAS
+# septoria musiva GWAS
 Steps (attempt 1):
 
 1. fastqc applied to given fastq R1/R2 files. Primer cutting and quality filtering above score of 30 accomplished with
