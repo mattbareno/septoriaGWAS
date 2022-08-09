@@ -80,9 +80,11 @@ a. if you have a lot of files, create a script that prints all of the file names
 `./gemma -bfile X.ped -p PHENOTYPE.csv -lm -o OUTPUT`
 
 .
+
 .
+
 .
-.
+
 Below is a catalog of all the errors in the process, not necessary for conducting the analysis
 
 Steps (attempt 1):
