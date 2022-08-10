@@ -67,11 +67,11 @@ a. if you have a lot of files, create a script that prints all of the file names
 
 10. Generate .bed, .bim, .fam files
 
-`plink --vcf X.vcf --allow-extra-chr`
+`plink --vcf X.vcf --allow-extra-chr --snps-only --make-bed`
 
 11. Generate .map, .ped, .nosex, and .log files
 
-`plink --vcf X.vcf --recode --out PREFIX --allow-extra-ch`
+`plink --vcf X.vcf --recode --out PREFIX --allow-extra-ch --snps-only`
 
 12. be sure to rename the .bed, .bim. and .fam files to contain the .ped file's name. i.e., if your .ped file is named X.ped, rename former files to X.ped.bed ...
 
