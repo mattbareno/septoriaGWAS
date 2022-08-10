@@ -75,9 +75,13 @@ a. if you have a lot of files, create a script that prints all of the file names
 
 12. be sure to rename the .bed, .bim. and .fam files to contain the .ped file's name. i.e., if your .ped file is named X.ped, rename former files to X.ped.bed ...
 
-13. to conduct the gwas, do
+13. to control for kinship effects. it doesnt matter what phenotype file you use, it needs it for some reason:
 
-`./gemma -bfile X.ped -p PHENOTYPE.csv -lm -o OUTPUT`
+`./gemma -bfile X.ped -p PHENOTYPE.csv -gk -o kinship`
+
+14. to conduct the gwas, do
+
+`./gemma -bfile X.ped -p PHENOTYPE.csv -k kinship.cXX.txt -lm -o OUTPUT`
 
 .
 
